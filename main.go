@@ -8,12 +8,16 @@ import (
 
 func main() {
 	// Default method return an Engine instance with Logger and Recovery middleware
-	var router = gin.Default()
+	var server = gin.Default()
 	var address = ":3000"
 
-	router.GET("/hello", func(context *gin.Context) {
-		context.String(http.StatusOK, "Hello!")
+	// Context is the most important part of gin. It allows us to pass variables between middleware,
+	// manage the flow, validate the JSON of a request and render a JSON response for example.
+	server.GET("/hello", func(context *gin.Context) {
+		context.JSON(http.StatusOK, gin.H{
+			"message": "Hello👋🏻",
+		})
 	})
 
-	log.Fatalln(router.Run(address))
+	log.Fatalln(server.Run(address))
 }
