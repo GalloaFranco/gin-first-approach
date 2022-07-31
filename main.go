@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	// Default method return an Engine instance with Logger and Recovery middleware
 	var router = gin.Default()
 	var address = ":3000"
 
