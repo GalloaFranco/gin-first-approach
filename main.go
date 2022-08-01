@@ -31,13 +31,9 @@ func main() {
 		})
 	})
 
-	server.GET("/videos", func(context *gin.Context) {
-		context.JSON(http.StatusOK, videoController.FindAll())
-	})
+	server.GET("/videos", videoController.FindAll)
 
-	server.POST("/video", func(context *gin.Context) {
-		context.JSON(http.StatusCreated, videoController.Save(context))
-	})
+	server.POST("/video", videoController.Save)
 
 	log.Fatalln(server.Run(address))
 }
