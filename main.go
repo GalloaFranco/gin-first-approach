@@ -1,9 +1,16 @@
 package main
 
 import (
+	"github.com/GalloaFranco/gin-first-approach/controller"
+	"github.com/GalloaFranco/gin-first-approach/service"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+)
+
+var (
+	videoService    service.IVideoService       = service.New()
+	videoController controller.IVideoController = controller.New(videoService)
 )
 
 func main() {
@@ -17,6 +24,14 @@ func main() {
 		context.JSON(http.StatusOK, gin.H{
 			"message": "Hello👋🏻",
 		})
+	})
+
+	server.GET("/videos", func(context *gin.Context) {
+		context.JSON(http.StatusOK, videoController.FindAll())
+	})
+
+	server.POST("/video", func(context *gin.Context) {
+		context.JSON(http.StatusCreated, videoController.Save(context))
 	})
 
 	log.Fatalln(server.Run(address))
