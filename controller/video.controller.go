@@ -4,11 +4,12 @@ import (
 	"github.com/GalloaFranco/gin-first-approach/entity"
 	"github.com/GalloaFranco/gin-first-approach/service"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 type IVideoController interface {
-	FindAll() []entity.Video
-	Save(context *gin.Context) entity.Video
+	FindAll(context *gin.Context)
+	Save(context *gin.Context)
 }
 
 type controller struct {
@@ -21,14 +22,17 @@ func New(service service.IVideoService) IVideoController {
 	}
 }
 
-func (controller *controller) FindAll() []entity.Video {
-	return controller.service.FindAll()
+func (controller *controller) FindAll(context *gin.Context) {
+	context.JSON(http.StatusOK, controller.service.FindAll())
 }
 
-func (controller *controller) Save(context *gin.Context) entity.Video {
+func (controller *controller) Save(context *gin.Context) {
 	var video entity.Video
 	// MustBindWith binds the passed struct pointer using the specified binding engine.
-	context.BindJSON(&video)
-	controller.service.Save(video)
-	return video
+	if err := context.BindJSON(&video); err != nil {
+		context.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+	video = controller.service.Save(video)
+	context.JSON(http.StatusCreated, video)
 }
