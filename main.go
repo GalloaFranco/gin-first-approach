@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/GalloaFranco/gin-first-approach/controller"
+	"github.com/GalloaFranco/gin-first-approach/middlewares"
 	"github.com/GalloaFranco/gin-first-approach/service"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -15,8 +16,12 @@ var (
 
 func main() {
 	// Default method return an Engine instance with Logger and Recovery middleware
-	var server = gin.Default()
+	//var server = gin.Default()
+
+	var server = gin.New()
 	var address = ":3000"
+
+	server.Use(gin.Recovery(), middlewares.Logger())
 
 	// Context is the most important part of gin. It allows us to pass variables between middleware,
 	// manage the flow, validate the JSON of a request and render a JSON response for example.
