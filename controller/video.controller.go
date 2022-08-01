@@ -22,12 +22,12 @@ func New(service service.IVideoService) IVideoController {
 }
 
 func (controller *controller) FindAll() []entity.Video {
-	//TODO implement me
-	panic("implement me")
+	return controller.service.FindAll()
 }
 
 func (controller *controller) Save(context *gin.Context) entity.Video {
 	var video entity.Video
+	// MustBindWith binds the passed struct pointer using the specified binding engine.
 	context.BindJSON(&video)
 	controller.service.Save(video)
 	return video
