@@ -19,7 +19,7 @@ func main() {
 	//var server = gin.Default()
 
 	var server = gin.New()
-	var address = ":3000"
+	var address = ":8081"
 
 	server.Use(gin.Recovery(), middlewares.Logger(), middlewares.Auth())
 
