@@ -16,8 +16,8 @@ type loginController struct {
 }
 
 type Credentials struct {
-	Username string `form:"username"`
-	Password string `form:"password"`
+	Username string `json:"username" form:"username"`
+	Password string `json:"password" form:"password"`
 }
 
 func NewLoginController(loginSerivice services.ILoginService, jwtService services.IJWTService) ILoginController {
@@ -36,6 +36,6 @@ func (loginController *loginController) Login(context *gin.Context) {
 	if isAuthenticated {
 		context.JSON(http.StatusOK, loginController.jwtService.GenerateToken(credentials.Username, true))
 	} else {
-		context.JSON(http.StatusUnauthorized, "")
+		context.AbortWithStatus(http.StatusUnauthorized)
 	}
 }
