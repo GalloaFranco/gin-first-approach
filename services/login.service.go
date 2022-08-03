@@ -11,8 +11,8 @@ type loginService struct {
 
 func NewLoginService() ILoginService {
 	return &loginService{ // Here we should call a DB or make a request to extern API, not leave the values hardcoded
-		authorizedPassword: "admin",
-		authorizedUsername: "123",
+		authorizedPassword: "123",
+		authorizedUsername: "admin",
 	}
 }
 
