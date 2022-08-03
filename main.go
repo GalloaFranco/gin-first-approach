@@ -11,7 +11,10 @@ import (
 
 var (
 	videoService    services.IVideoService       = services.New()
-	videoController controllers.IVideoController = controllers.New(videoService)
+	videoController controllers.IVideoController = controllers.NewVideoController(videoService)
+	loginService    services.ILoginService       = services.NewLoginService()
+	jwtService      services.IJWTService         = services.NewJWTService()
+	loginController controllers.ILoginController = controllers.NewLoginController(loginService, jwtService)
 )
 
 func main() {
@@ -21,7 +24,8 @@ func main() {
 	var server = gin.New()
 	var address = ":8081"
 
-	server.Use(gin.Recovery(), middlewares.Logger(), middlewares.Auth())
+	// server.Use(gin.Recovery(), middlewares.Logger(), middlewares.Auth())
+	server.Use(gin.Recovery(), middlewares.Logger())
 
 	// Context is the most important part of gin. It allows us to pass variables between middleware,
 	// manage the flow, validate the JSON of a request and render a JSON response for example.
@@ -31,9 +35,11 @@ func main() {
 		})
 	})
 
-	server.GET("/videos", videoController.FindAll)
+	server.POST("/login", loginController.Login)
 
-	server.POST("/video", videoController.Save)
+	server.GET("/videos", middlewares.AuthorizeJWT(), videoController.FindAll)
+
+	server.POST("/video", middlewares.AuthorizeJWT(), videoController.Save)
 
 	log.Fatalln(server.Run(address))
 }
