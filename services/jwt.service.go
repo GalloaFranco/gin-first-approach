@@ -13,8 +13,8 @@ type IJWTService interface {
 }
 
 type jwtCustomClaims struct {
-	Name  string
-	Admin bool
+	Name  string `json:"name"`
+	Admin bool   `json:"admin"`
 	jwt.StandardClaims
 }
 
@@ -64,7 +64,7 @@ func (jwtService *jwtService) GenerateToken(username string, admin bool) string 
 func (jwtService *jwtService) ValidateToken(tokenString string) (*jwt.Token, error) {
 	return jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		// Signing method validation
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); ok {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 		// Return the secret signing key
