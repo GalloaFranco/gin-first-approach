@@ -1,15 +1,15 @@
-package service
+package services
 
-import "github.com/GalloaFranco/gin-first-approach/entity"
+import "github.com/GalloaFranco/gin-first-approach/entities"
 
 type IVideoService interface {
-	Save(video entity.Video) entity.Video
-	FindAll() []entity.Video
+	Save(video entities.Video) entities.Video
+	FindAll() []entities.Video
 }
 
 // Struct that would implement IVideoService
 type videoService struct {
-	videos []entity.Video
+	videos []entities.Video
 }
 
 // New Constructor function, to return instance of videoService (impl of interface)
@@ -19,12 +19,12 @@ func New() IVideoService {
 }
 
 // Save function impl
-func (service *videoService) Save(video entity.Video) entity.Video {
+func (service *videoService) Save(video entities.Video) entities.Video {
 	service.videos = append(service.videos, video)
 	return video
 }
 
 // FindAll function impl
-func (service *videoService) FindAll() []entity.Video {
+func (service *videoService) FindAll() []entities.Video {
 	return service.videos
 }

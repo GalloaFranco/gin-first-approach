@@ -1,4 +1,4 @@
-package entity
+package entities
 
 type Video struct {
 	Title       string `json:"title" binding:"required"`                    // Tag for json serialization

@@ -1,17 +1,17 @@
 package main
 
 import (
-	"github.com/GalloaFranco/gin-first-approach/controller"
+	"github.com/GalloaFranco/gin-first-approach/controllers"
 	"github.com/GalloaFranco/gin-first-approach/middlewares"
-	"github.com/GalloaFranco/gin-first-approach/service"
+	"github.com/GalloaFranco/gin-first-approach/services"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 )
 
 var (
-	videoService    service.IVideoService       = service.New()
-	videoController controller.IVideoController = controller.New(videoService)
+	videoService    services.IVideoService       = services.New()
+	videoController controllers.IVideoController = controllers.New(videoService)
 )
 
 func main() {

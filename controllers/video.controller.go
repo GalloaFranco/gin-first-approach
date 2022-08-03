@@ -1,8 +1,8 @@
-package controller
+package controllers
 
 import (
-	"github.com/GalloaFranco/gin-first-approach/entity"
-	"github.com/GalloaFranco/gin-first-approach/service"
+	"github.com/GalloaFranco/gin-first-approach/entities"
+	"github.com/GalloaFranco/gin-first-approach/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -13,12 +13,12 @@ type IVideoController interface {
 }
 
 type controller struct {
-	service service.IVideoService
+	service services.IVideoService
 }
 
-// New Constructor function, to return instance of controller (impl of interface)
-// This function returns a value of interface type IVideoController, which contains a value of concrete type &controller.
-func New(service service.IVideoService) IVideoController {
+// New Constructor function, to return instance of controllers (impl of interface)
+// This function returns a value of interface type IVideoController, which contains a value of concrete type &controllers.
+func New(service services.IVideoService) IVideoController {
 	return &controller{
 		service: service,
 	}
@@ -29,7 +29,7 @@ func (controller *controller) FindAll(context *gin.Context) {
 }
 
 func (controller *controller) Save(context *gin.Context) {
-	var video entity.Video
+	var video entities.Video
 	// MustBindWith binds the passed struct pointer using the specified binding engine.
 	if err := context.BindJSON(&video); err != nil {
 		context.JSON(http.StatusBadRequest, err.Error())
