@@ -16,6 +16,8 @@ type controller struct {
 	service service.IVideoService
 }
 
+// New Constructor function, to return instance of controller (impl of interface)
+// This function returns a value of interface type IVideoController, which contains a value of concrete type &controller.
 func New(service service.IVideoService) IVideoController {
 	return &controller{
 		service: service,
