@@ -35,7 +35,7 @@ func NewVideoRepository() IVideoRepository {
 func (db *database) CloseDB() {
 	postgresDB, _ := db.connection.DB()
 	if err := postgresDB.Close(); err != nil {
-		panic("Cannot close the database")
+		panic("Cannot close the database connection")
 	}
 }
 
