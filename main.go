@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/GalloaFranco/gin-first-approach/controllers"
 	"github.com/GalloaFranco/gin-first-approach/middlewares"
+	"github.com/GalloaFranco/gin-first-approach/repositories"
 	"github.com/GalloaFranco/gin-first-approach/services"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -10,14 +11,17 @@ import (
 )
 
 var (
-	videoService    services.IVideoService       = services.New()
-	videoController controllers.IVideoController = controllers.NewVideoController(videoService)
-	loginService    services.ILoginService       = services.NewLoginService()
-	jwtService      services.IJWTService         = services.NewJWTService()
-	loginController controllers.ILoginController = controllers.NewLoginController(loginService, jwtService)
+	videoRepository repositories.IVideoRepository = repositories.NewVideoRepository()
+	videoService    services.IVideoService        = services.New(videoRepository)
+	videoController controllers.IVideoController  = controllers.NewVideoController(videoService)
+	loginService    services.ILoginService        = services.NewLoginService()
+	jwtService      services.IJWTService          = services.NewJWTService()
+	loginController controllers.ILoginController  = controllers.NewLoginController(loginService, jwtService)
 )
 
 func main() {
+
+	defer videoRepository.CloseDB()
 	// Default method return an Engine instance with Logger and Recovery middleware
 	//var server = gin.Default()
 
