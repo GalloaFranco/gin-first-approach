@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  db:
+    image: postgres:10.5
+    restart: always
+    container_name: docker_pg_db
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - $HOME/docker/volumes/data-pg:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
