@@ -1,7 +1,12 @@
 package entities
 
+import "time"
+
 type Video struct {
-	Title       string `json:"title" binding:"required"`                    // Tag for json serialization
-	Description string `json:"description" binding:"required,min=2,max=15"` // Tag for json serialization
-	URL         string `json:"URL" binding:"required,url"`                  // Tag for json serialization
+	ID          uint64    `gorm:"primary_key;auto_increment" json:"id"`
+	Title       string    `json:"title" binding:"required" gorm:"type:varchar(200)"`
+	Description string    `json:"description" binding:"required,min=2,max=15" gorm:"type:varchar(200)"`
+	URL         string    `json:"URL" binding:"required,url" gorm:"type:varchar(200)"`
+	CreatedAt   time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
+	UpdatedAt   time.Time `json:"-" gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
