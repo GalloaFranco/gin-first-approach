@@ -21,7 +21,6 @@ var (
 
 func main() {
 
-	defer videoRepository.CloseDB()
 	// Default method return an Engine instance with Logger and Recovery middleware
 	//var server = gin.Default()
 
@@ -30,6 +29,7 @@ func main() {
 
 	// server.Use(gin.Recovery(), middlewares.Logger(), middlewares.Auth())
 	server.Use(gin.Recovery(), middlewares.Logger())
+	defer videoRepository.CloseDB()
 
 	// Context is the most important part of gin. It allows us to pass variables between middleware,
 	// manage the flow, validate the JSON of a request and render a JSON response for example.
