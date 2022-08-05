@@ -4,6 +4,7 @@ import (
 	"github.com/GalloaFranco/gin-first-approach/entities"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"log"
 )
 
@@ -26,7 +27,9 @@ func NewVideoRepository() IVideoRepository {
 		log.Println(err.Error())
 		panic("Failed to connect with database")
 	}
-	db.AutoMigrate(&entities.Video{})
+	db.Logger.LogMode(logger.Info)
+	// Automatically migrate your schema.
+	db.AutoMigrate(&entities.Video{}) // This would create a new table in the DB
 	return &database{
 		connection: db,
 	}
