@@ -27,6 +27,18 @@ func NewLoginController(loginSerivice services.ILoginService, jwtService service
 	}
 }
 
+// Login Authenticate godoc
+// @Summary Provides a JSON Web Token
+// @Description Authenticates a user and provides a JWT to Authorize API calls
+// @Tags auth
+// @ID Authentication
+// @Consume application/x-www-form-urlencoded
+// @Produce json
+// @Param username formData string true "Username"
+// @Param password formData string true "Password"
+// @Success 200
+// @Failure 401
+// @Router /auth/login [post]
 func (loginController *loginController) Login(context *gin.Context) {
 	var credentials Credentials
 	if err := context.ShouldBind(&credentials); err != nil {

@@ -24,10 +24,32 @@ func NewVideoController(service services.IVideoService) IVideoController {
 	}
 }
 
+// FindAll godoc
+// @Security bearerAuth
+// @Summary List existing videos
+// @Description Get all the existing videos
+// @Tags videos
+// @Accept  json
+// @Produce  json
+// @Success 200 {array} entities.Video
+// @Failure 401
+// @Router /videos [get]
 func (controller *controller) FindAll(context *gin.Context) {
 	context.JSON(http.StatusOK, controller.service.FindAll())
 }
 
+// Save godoc
+// @Security bearerAuth
+// @Summary Create new videos
+// @Description Create a new video
+// @Tags videos
+// @Accept  json
+// @Produce  json
+// @Param video body entities.Video true "Create video"
+// @Success 200
+// @Failure 400
+// @Failure 401
+// @Router /videos [post]
 func (controller *controller) Save(context *gin.Context) {
 	var video entities.Video
 	// MustBindWith binds the passed struct pointer using the specified binding engine.
