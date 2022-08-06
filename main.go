@@ -2,10 +2,13 @@ package main
 
 import (
 	"github.com/GalloaFranco/gin-first-approach/controllers"
+	"github.com/GalloaFranco/gin-first-approach/docs"
 	"github.com/GalloaFranco/gin-first-approach/middlewares"
 	"github.com/GalloaFranco/gin-first-approach/repositories"
 	"github.com/GalloaFranco/gin-first-approach/services"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"log"
 	"net/http"
 )
@@ -19,11 +22,18 @@ var (
 	loginController controllers.ILoginController  = controllers.NewLoginController(loginService, jwtService)
 )
 
+// @title Galloafranco - First approach to Gin Framework
+// @version 1.0
+// @description Gin first approach
+// @BasePath /
+// @schemes http
+// @securityDefinitions.apikey bearerAuth
+// @in header
+// @name Authorization
 func main() {
 
 	// Default method return an Engine instance with Logger and Recovery middleware
 	//var server = gin.Default()
-
 	var server = gin.New()
 	var address = ":8081"
 
@@ -39,11 +49,22 @@ func main() {
 		})
 	})
 
-	server.POST("/login", loginController.Login)
+	apiRoutes := server.Group(docs.SwaggerInfo.BasePath)
+	{
 
-	server.GET("/videos", middlewares.AuthorizeJWT(), videoController.FindAll)
+		login := apiRoutes.Group("auth/")
+		{
+			login.POST("/login", loginController.Login)
+		}
 
-	server.POST("/video", middlewares.AuthorizeJWT(), videoController.Save)
+		videos := apiRoutes.Group("/videos")
+		{
+			videos.GET("", middlewares.AuthorizeJWT(), videoController.FindAll)
+
+			videos.POST("", middlewares.AuthorizeJWT(), videoController.Save)
+		}
+	}
+	server.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	log.Fatalln(server.Run(address))
 }
