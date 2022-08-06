@@ -1,0 +1,106 @@
+basePath: /
+definitions:
+  entities.Video:
+    properties:
+      URL:
+        type: string
+      description:
+        maxLength: 15
+        minLength: 2
+        type: string
+      id:
+        description: GORM uses any field with the name ID as the table's primary key
+          by default
+        type: integer
+      title:
+        type: string
+    required:
+    - URL
+    - description
+    - title
+    type: object
+info:
+  contact: {}
+  description: Gin first approach
+  title: Galloafranco - First approach to Gin Framework
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      description: Authenticates a user and provides a JWT to Authorize API calls
+      operationId: Authentication
+      parameters:
+      - description: Username
+        in: formData
+        name: username
+        required: true
+        type: string
+      - description: Password
+        in: formData
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+      summary: Provides a JSON Web Token
+      tags:
+      - auth
+  /videos:
+    get:
+      consumes:
+      - application/json
+      description: Get all the existing videos
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entities.Video'
+            type: array
+        "401":
+          description: Unauthorized
+      security:
+      - bearerAuth: []
+      summary: List existing videos
+      tags:
+      - videos
+    post:
+      consumes:
+      - application/json
+      description: Create a new video
+      parameters:
+      - description: Create video
+        in: body
+        name: video
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Video'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+      security:
+      - bearerAuth: []
+      summary: Create new videos
+      tags:
+      - videos
+schemes:
+- http
+securityDefinitions:
+  bearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
