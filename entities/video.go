@@ -4,8 +4,8 @@ import (
 	"time"
 )
 
+// Video GORM uses any field with the name ID as the table's primary key by default
 type Video struct {
-	// GORM uses any field with the name ID as the table's primary key by default
 	ID          uint64    `gorm:"primary_key;auto_increment" json:"id"`
 	Title       string    `json:"title" binding:"required" gorm:"type:varchar(200)"`
 	Description string    `json:"description" binding:"required,min=2,max=15" gorm:"type:varchar(200)"`
