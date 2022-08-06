@@ -52,9 +52,9 @@ func main() {
 	apiRoutes := server.Group(docs.SwaggerInfo.BasePath)
 	{
 
-		login := apiRoutes.Group("auth/")
+		auth := apiRoutes.Group("auth/")
 		{
-			login.POST("/login", loginController.Login)
+			auth.POST("/login", loginController.Login)
 		}
 
 		videos := apiRoutes.Group("/videos")
