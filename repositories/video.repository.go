@@ -29,7 +29,10 @@ func NewVideoRepository() IVideoRepository {
 	}
 	db.Logger.LogMode(logger.Info)
 	// Automatically migrate your schema.
-	db.AutoMigrate(&entities.Video{}) // This would create a new table in the DB
+	if err := db.AutoMigrate(&entities.Video{}); err != nil { // This would create a new table in the DB
+		log.Println(err.Error())
+		panic("Failed to migrate database")
+	}
 	return &database{
 		connection: db,
 	}
