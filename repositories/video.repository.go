@@ -9,7 +9,7 @@ import (
 )
 
 type IVideoRepository interface {
-	Save(video entities.Video)
+	Save(video entities.Video) entities.Video
 	Update(video entities.Video)
 	Delete(video entities.Video)
 	FindAll() []entities.Video
@@ -42,8 +42,9 @@ func (db *database) CloseDB() {
 	}
 }
 
-func (db *database) Save(video entities.Video) {
+func (db *database) Save(video entities.Video) entities.Video {
 	db.connection.Create(&video)
+	return video
 }
 
 func (db *database) Update(video entities.Video) {
